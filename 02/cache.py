@@ -32,7 +32,6 @@ class DoublyLinkedList:
             # If the list is empty, initialize the head and tail to the new node.
             node.prev = node.next = None
             self.head = self.tail = node
-        node = None
 
     # Remove the node from the doubly linked list.
     def remove_node(self, node):
@@ -48,7 +47,6 @@ class DoublyLinkedList:
                 self.tail.next = None
             else: # If the node is the only element in the list
                 self.head = self.tail = None
-            node = None
 
     # Move the node to the front of the doubly linked list.
     # 1. Save the node's value.
@@ -82,12 +80,14 @@ class Cache:
                 # Remove the oldest accessed site.
                 tail_key = self.cache_linked_list.tail.key
                 self.cache_linked_list.remove_node(self.cache_linked_list.tail)
-                self.cache_hash_table.put(tail_key, None)
+                # self.cache_hash_table.put(tail_key, None) # -> deleteでhash tableからも消した方が良い -> hash tableも大きくなっちゃうしnoneなのにhash tableでhitして1に場合わけされちゃう
+                self.cache_hash_table.delete(tail_key)
                 self.size -= 1
             # Add the new page as the most recent access.
             new_node = Node(url, contents)
             self.cache_linked_list.add_node_to_front(new_node)
-            self.cache_hash_table.put(url, self.cache_linked_list.head)
+            # self.cache_hash_table.put(url, self.cache_linked_list.head) # -> self.cache_hash_table.put(url, new_node)の方がわかりやすい
+            self.cache_hash_table.put(url, new_node)
             self.size += 1
 
     # Return the URLs stored in the cache. The URLs are ordered in the order

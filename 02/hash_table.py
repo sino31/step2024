@@ -106,6 +106,7 @@ class HashTable:
     #               otherwise.
     def delete(self, key):
         assert type(key) == str
+        self.check_size()
         bucket_index = calculate_hash(key) % self.bucket_size
         item = self.buckets[bucket_index]
         prev = None
@@ -116,11 +117,13 @@ class HashTable:
                 else:
                     prev.next = item.next # Skip the target item
                 self.item_count -= 1 # Decrease the item count by one
+                self.rehashing()
                 return True
             else:
                 # Continue traversing the list
                 prev = item
                 item = item.next
+        self.rehashing()
         return False
 
     # Return the total number of items in the hash table.
@@ -146,9 +149,9 @@ class HashTable:
                 double += 1
             new_bucket_size = double
         elif self.item_count <= self.bucket_size * 0.3: # 2.
-            half = self.bucket_size // 2
-            while half not in sieve: # Find prime numbers around half.
-                half += 1
+            half = self.bucket_size // 2 + 1
+            # while half not in sieve: # Find prime numbers around half.
+            #     half += 1
             new_bucket_size = half
         else:
             return
@@ -162,6 +165,7 @@ class HashTable:
                 item = item.next
         self.bucket_size = new_bucket_size
         self.buckets = new_buckets
+        self.check_size()
 
 # Test the functional behavior of the hash table.
 def functional_test():
