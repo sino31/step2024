@@ -81,3 +81,17 @@
     1. 各関数に通して計算
     2. 計算結果 answer で「ABS/INT/ROUND 数値」の tokens を置き換え  
         e.g. `12+abs(-12)` -> answer = 12 -> `12+12`
+
+# Overall Module Structure
+
+**Purpose: module 化する** : 機能ごとにファイル,関数を分割
+
+-   main.py : test を走らせる  
+    test, run_test, main
+-   tokenizer.py : tokenize を行う  
+    handle_negative_numbers, read_*, tokenize
+-   evaluator.py : evaluate を行う  
+    evaluate_*, evaluate
+-   utils.py : 他ファイルで使用される helper 関数  
+    for evaluate_parenthesis : is_valid_parenthesis, find_the_matching_parenthesis  
+    for main : print_fail, print_error
