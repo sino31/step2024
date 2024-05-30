@@ -25,6 +25,7 @@
 -   「0 数値」を除外："ERROR : Leading zeros are not allowed"を raise
     e.g. `1\*01`
 -   FAIL を RED、ERROR を YELLOW で表示
+-   対話モード時に"q"入力でプログラムを終了
 
 # Homework 2
 
@@ -89,9 +90,9 @@
 -   main.py : test を走らせる  
     test, run_test, main
 -   tokenizer.py : tokenize を行う  
-    handle_negative_numbers, read_*, tokenize
+    handle*negative_numbers, read*\*, tokenize
 -   evaluator.py : evaluate を行う  
-    evaluate_*, evaluate
+    evaluate\_\*, evaluate
 -   utils.py : 他ファイルで使用される helper 関数  
     for evaluate_parenthesis : is_valid_parenthesis, find_the_matching_parenthesis  
     for main : print_fail, print_error
