@@ -38,18 +38,12 @@ class Wikipedia:
         print("Finished reading %s" % links_file)
         print()
 
+
     # Convert title to ID
     def title_to_id(self, title):
         for page_id, page_title in self.titles.items():
             if page_title == title:
                 return page_id
-        return None
-
-    # Convert ID to title
-    def id_to_title(self, id):
-        for page_id, page_title in self.titles.items():
-            if page_id == id:
-                return page_title
         return None
 
 
@@ -116,8 +110,7 @@ class Wikipedia:
             if node_id == goal_id:
                 print(f"The shortest path from '{start}' to '{goal}' is:")
                 for node in path:
-                    title = self.id_to_title(node)
-                    print(title)
+                    print(self.titles[node])
                 print()
                 return
 
@@ -173,9 +166,8 @@ class Wikipedia:
         # Get the top 10 pages based on PageRank
         top10_pages = sorted(pagerank, key=pagerank.get, reverse=True)[:10]
         print("The 10 most popular pages are:")
-        for i, page_id in enumerate(top10_pages):
-            page_title = self.id_to_title(page_id)
-            print(f"{i}: {page_title}")
+        for i, id in enumerate(top10_pages):
+            print(f"{i}: {self.titles[id]}")
 
 
     # Do something more interesting!!
