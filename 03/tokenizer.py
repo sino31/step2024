@@ -67,7 +67,7 @@ def read_round(line, index):
     return token, index + 5
 
 
-
+# tokenizeはsplitだけしてnot in '+-*/('とかはevaluateにした方が後から//とか追加した時にevaluateだけ変更すれば良いようになる
 def tokenize(line):
     tokens = []
     index = 0
@@ -98,7 +98,7 @@ def tokenize(line):
             (token, index) = read_left_parenthesis(line, index)
         elif line[index] == ')':
             (token, index) = read_right_parenthesis(line, index)
-        elif index + 3 < len(line) and line[index : index + 3] == "abs":
+        elif index + 3 < len(line) and line[index : index + 3] == "abs": #3じゃなくてlen(abs) 対応するfuncをまとめたもの作って処理：startsswith関数 supported_funcsをセットで作る
             (token, index) = read_abs(line, index)
         elif index + 3 < len(line) and line[index : index + 3] == "int":
             (token, index) = read_int(line, index)

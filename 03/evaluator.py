@@ -37,7 +37,7 @@ def evaluate_multiply_and_devide(tokens):
 # Evaluate inside parentheses recursively.
 def evaluate_parenthesis(tokens):
     index = 0
-    if not is_valid_parenthesis(tokens):
+    if not is_valid_parenthesis(tokens): # 最初の1回で良いのに再帰で何回も呼ばれてる(find_関数で一緒に処理すれば良い) -> stackカウントしながらevaluateして最後にstackが一番上にいることを確認すればそれで足りる
         raise SyntaxError("Unbalanced parentheses")
     while index < len(tokens):
         if tokens[index]['type'] == 'LEFT_PARENTHESIS':

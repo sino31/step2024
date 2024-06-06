@@ -66,6 +66,8 @@ def run_test():
     test("12+int(2.6)")
     test("12+round(2.6)")
     test("12+abs(int(round(-1.55)+abs(int(-2.3+4))))")
+    test("round 3.5") # これが通っちゃう
+    # NUMBERと別でカッコ付き数字のtype作って処理すれば弾ける
 
     # test with " "
     test("12 + abs(int(round(-1.55) + abs(int(-2.3 + 4))))")
@@ -89,3 +91,7 @@ if __name__ == "__main__":
             print("answer = %f\n" % answer)
         except Exception as e:
             print("Error: %s\n" % str(e))
+
+# overall
+# +,-,*,/とかはclass作ってENUMで PLUS = 1とかしたらミス起きない tokenも同じ
+# unittestのasserraises使えばerror出るのが正解、みたいにできる
