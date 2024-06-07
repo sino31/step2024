@@ -23,6 +23,11 @@
 2. max_iterations に到達する or 収束条件を満たすまで、以下の処理を繰り返す.
    2-1. 新しい pagerank を格納する new_pagerank を生成.  
    2-2. 15% を全ノードに均等に分配.  
+    - 各ページのランダムジャンプ部分は`pagerank[id] * (1 - p) / num_pages` 
+    - 全てのページでこの計算を行い、その合計値をランダム分として全ページに分配：  
+    `sum(pagerank[id] * (1 - p) / num_pages for id in self.titles) <-> sum(pagerank[id] for id in self.titles) * (1 - p) / num_pages` 
+    - 前提として`sum(pagerank[id] for id in self.titles) == 1.0`なので各ページのランダム分の new_pagerank は`1.0 * (1 - p)/ num_pages`  
+
    2-3. 全てのページ(self.title)に対して
     - ページが link を持つ時は 85%を「全ての link 先に」均等に分配
     - ページが link を持たない場合は 85%を「全ての node に」均等に分配
