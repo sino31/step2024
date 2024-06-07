@@ -125,7 +125,7 @@ class Wikipedia:
         print()
 
 
-    def find_most_popular_pages(self, max_iterations=100, p=0.85, convergence_eps = 0.01, assert_eps = 1.0e-6):
+    def find_most_popular_pages(self, max_iterations=100, p=0.85, eps = 1.0e-6):
         """
 
             Calculate the page ranks and print the most popular pages.
@@ -142,26 +142,28 @@ class Wikipedia:
 
         for i in range(max_iterations):
             new_pagerank = {id: (1.0 * (1 - p)) / num_pages for id in self.titles} # Create a new PageRank and add the rank for random openings
+            allpage_rank = 0.0
             for from_id, to_ids in self.links.items():
                 if to_ids: # Page has links
-                    shared_rank = pagerank[from_id] / len(to_ids)
+                    shared_rank = pagerank[from_id] * p / len(to_ids)
                     for to_id in to_ids:
-                        new_pagerank[to_id] += p * shared_rank
+                        new_pagerank[to_id] += shared_rank
                 else: # Page has no links
-                    shared_rank = pagerank[from_id] / num_pages
-                    for id in self.titles:
-                        new_pagerank[id] += p * shared_rank
+                    shared_rank = pagerank[from_id] * p / num_pages
+                    allpage_rank += shared_rank
+            for id in self.titles:
+                new_pagerank[id] += allpage_rank
 
             # Check for convergence
             sum_diff = sum(abs(new_pagerank[id] - pagerank[id]) for id in self.titles)
-            if sum_diff**2 < convergence_eps:
+            if sum_diff**2 < eps:
                 break
 
             pagerank = new_pagerank
 
         # Calculate the total rank to ensure it sums to 1
         total_rank = sum(pagerank[id] for id in self.titles)
-        assert abs(total_rank - 1.0) < assert_eps, f"Total rank ({total_rank}) did not converge to 1.0"
+        assert abs(total_rank - 1.0) < eps, f"Total rank ({total_rank}) did not converge to 1.0"
 
         # Get the top 10 pages based on PageRank
         top10_pages = sorted(pagerank, key=pagerank.get, reverse=True)[:10]
@@ -183,5 +185,6 @@ if __name__ == "__main__":
     wikipedia = Wikipedia(sys.argv[1], sys.argv[2])
     wikipedia.find_longest_titles()
     wikipedia.find_most_linked_pages()
-    wikipedia.find_shortest_path("渋谷", "小野妹子")
+    wikipedia.find_shortest_path("A", "F")
+    # wikipedia.find_shortest_path("渋谷", "小野妹子")
     wikipedia.find_most_popular_pages()

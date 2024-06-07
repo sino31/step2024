@@ -36,6 +36,10 @@
 4. pagerank を new_pagerank に更新
 5. 「全部のノードのページランクの合計値」が一定に保たれていることを確認
    pagerank の合計を計算し、その合計と元の rank 合計 1.0 の差が誤差範囲内であることを確認する
+   abs使いたくないから2乗使うからconvergence_epsのsqrtとdiffの比較で良い
+   sum_diff = all(abs(new_pagerank[id] - pagerank[id]) for id in self.titles)
+            if sum_diff < convergence_eps:
+                break
 6. pagerank の多い順に sort し、top10 を出力
 
 ### code execution result
