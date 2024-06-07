@@ -155,8 +155,8 @@ class Wikipedia:
                 new_pagerank[id] += allpage_rank
 
             # Check for convergence
-            sum_diff = sum(abs(new_pagerank[id] - pagerank[id]) for id in self.titles)
-            if sum_diff**2 < eps:
+            sum_diff = all(abs(new_pagerank[id] - pagerank[id]) for id in self.titles)
+            if sum_diff < eps:
                 break
 
             pagerank = new_pagerank
