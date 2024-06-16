@@ -113,15 +113,12 @@ class GeneticAlgorithm:
         return child1, child2
 
 
-    def mutation(self, path):
+    def inversion_mutation(self, path):
         if random.random() < self.mutation_rate:
             length = len(path)
-            city1_index = random.randint(0, length - 1)
-            city2_index = random.randint(0, length - 1)
-
-            tmp = path[city1_index]
-            path[city1_index] = path[city2_index]
-            path[city2_index] = tmp
+            start = random.randint(0, length - 2)
+            end = random.randint(start + 1, length - 1)
+            path[start:end + 1] = reversed(path[start:end + 1])
         return path
 
 
@@ -141,16 +138,43 @@ class GeneticAlgorithm:
             # 3. 生成された子経路に対して一定の確率で突然変異を起こす
             # 4. 新しい経路の総距離を計算し、全ての経路の適応度を更新
             # for child1
-            child1 = self.mutation(child1)
+            child1 = self.inversion_mutation(child1)
             self.paths[tuple(child1)] = self.calculate_fitness(child1)
             # for child2
-            child2 = self.mutation(child2)
+            child2 = self.inversion_mutation(child2)
             self.paths[tuple(child2)] = self.calculate_fitness(child2)
 
             self.remove_low_fitness_path() # 5. 適応度が低い個体を削除し、世代を交代する
 
         shortest_path = max(self.paths, key=self.paths.get) # 6. 一定回数世代を交代したら、その時点で1番適応度が高いものを最短経路とする
+        print("finished g.a")
+        shortest_path = self.two_opt(shortest_path)
         return shortest_path
+
+    # 交換した場合
+    def delta_distance(self, best, i, j):
+        before = self.distance(best[i - 1][1], best[i][1]) + self.distance(best[j - 1][1], best[j][1])
+        after = self.distance(best[i - 1][1], best[j - 1][1]) + self.distance(best[i][1], best[j][1])
+        return after - before
+
+    # 2-opt
+    def two_opt(self, path):
+        best = list(path)
+        improved = True
+        while improved:
+            improved = False
+            for i in range(1, len(best) - 2):
+                for j in range(i + 1, len(best)):
+                    if j - i == 1:
+                        continue
+                    delta = self.delta_distance(best, i, j)
+                    if delta < 0:
+                        new_path = best.copy()
+                        new_path[i:j] = best[j - 1:i - 1:-1]
+                        best = new_path
+                        improved = True
+        return tuple(best)
+
 
 
     def output(self, shortest_path, file):
@@ -159,8 +183,8 @@ class GeneticAlgorithm:
             for city in shortest_path:
                 f.write(f"{city[0]}\n")
 
-        # 経路の距離を計算して標準出力に表示
         print(f"Shortest path: {self.path_distance(shortest_path)}")
+
 
 if __name__ == '__main__':
     assert len(sys.argv) > 2
