@@ -148,14 +148,17 @@ class GeneticAlgorithm:
 
         shortest_path = max(self.paths, key=self.paths.get) # 6. 一定回数世代を交代したら、その時点で1番適応度が高いものを最短経路とする
         print("finished g.a")
+        # 7. 2-optでさらに経路を最短にする
         shortest_path = self.two_opt(shortest_path)
         return shortest_path
 
-    # 交換した場合
+
+    # 2-optでpathを交換した場合の距離計算(交換した場所のみを計算し、どちらが最短か確認)
     def delta_distance(self, best, i, j):
-        before = self.distance(best[i - 1][1], best[i][1]) + self.distance(best[j - 1][1], best[j][1])
-        after = self.distance(best[i - 1][1], best[j - 1][1]) + self.distance(best[i][1], best[j][1])
+        before = self.distance(best[i - 1], best[i]) + self.distance(best[j - 1], best[j])
+        after = self.distance(best[i - 1], best[j - 1]) + self.distance(best[i], best[j])
         return after - before
+
 
     # 2-opt
     def two_opt(self, path):
@@ -174,7 +177,6 @@ class GeneticAlgorithm:
                         best = new_path
                         improved = True
         return tuple(best)
-
 
 
     def output(self, shortest_path, file):
