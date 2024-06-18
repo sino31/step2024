@@ -21,6 +21,10 @@
 5. 適応度が低い個体を削除し、世代を交代する(2-5を繰り返す) -> remove_low_fitness_path
 6. 一定回数世代を交代したら、その時点で1番適応度が高いものを最短経路とする
 
+2-opt
+参考 : https://qiita.com/hotpepsi/items/424f9491e7baaa63b6ce
+任意の2つのpathに対し、今の繋ぎ方と逆のnodeで繋ぎ直す繋ぎ直す場合でより短い経理を選んで繋ぎ直す
+
 """
 
 import sys
