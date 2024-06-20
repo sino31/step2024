@@ -14,11 +14,11 @@
 ・世代交代 : 一定回数処理を繰り返したら、一定数値よりも適応度が低いものは可能性として考えない(削除する)
 ・経路の決定 : 最終的に繰り返し処理を終了させた時点で適応度が一番高いものが最短経路
 
-1. ランダムに一定数の経路を生成し、適応度を計算 -> create_init_path
-2. ルーレット法で親となる経路を2つ選び、交叉によって子経路を作成 -> generate_child
-3. 生成された子経路に対して一定の確率で突然変異を起こす -> mutation
-4. 新しい経路の総距離を計算し、全ての経路の適応度を更新 -> calculate_fitness
-5. 適応度が低い個体を削除し、世代を交代する(2-5を繰り返す) -> remove_low_fitness_path
+1. ランダムに一定数の経路を生成し、適応度を計算
+2. ルーレット法で親となる経路を2つ選び、交叉によって子経路を作成
+3. 生成された子経路に対して一定の確率で突然変異を起こす
+4. 新しい経路の総距離を計算し、全ての経路の適応度を更新
+5. 適応度が低い個体を削除し、世代を交代する(2-5を繰り返す)
 6. 一定回数世代を交代したら、その時点で1番適応度が高いものを最短経路とする
 
 2-opt
@@ -30,7 +30,7 @@
 import sys
 import random
 import math
-from common import print_tour, read_input
+from common import read_input
 
 
 class GeneticAlgorithm:
@@ -46,7 +46,6 @@ class GeneticAlgorithm:
         print(f"Initial path size: {self.init_path_size}")
         print(f"Mutation rate: {self.mutation_rate}")
         print(f"Retain rate: {self.retain_rate}")
-
 
     # node間の距離を計算
     def distance(self, city1, city2):
