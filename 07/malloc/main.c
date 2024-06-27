@@ -317,8 +317,8 @@ void run_challenges() {
 #endif
 
   // Warm up run.
-  run_challenge(NULL, 128, 128, simple_initialize, simple_malloc, simple_free,
-                simple_finalize);
+//   run_challenge(NULL, 128, 128, simple_initialize, simple_malloc, simple_free,
+//                 simple_finalize);
 
   // Challenge 1:
   run_challenge("trace1_simple.txt", 128, 128, simple_initialize, simple_malloc,

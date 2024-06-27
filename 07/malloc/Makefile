@@ -1,4 +1,4 @@
-CFLAGS_COMMON=-Wall -g -lm
+CFLAGS_COMMON=-Wall -g -lm -fsanitize=address -g
 CFLAGS=-O3 $(CFLAGS_COMMON)
 CFLAGS_ASAN=-O1 -fsanitize=address -fno-omit-frame-pointer $(CFLAGS_COMMON)
 SRCS=main.c malloc.c simple_malloc.c
